@@ -115,20 +115,20 @@ Para resolver isso, desacoplamos a **Infraestrutura/Idempotência** da **Regra d
 
 ```mermaid
 flowchart TD
-    Queue["RabbitMQ Queue"] --> Listener["InboxConsumerListener<br/>(Infraestrutura + Inbox Idempotente)"]
-    Listener --> Registry["EventStrategyRegistry<br/>(Roteador Dinâmico)"]
+    Queue["RabbitMQ Queue"] --> Listener["InboxConsumerListener<br>(Infraestrutura + Inbox Idempotente)"]
+    Listener --> Registry["EventStrategyRegistry<br>(Roteador Dinamico)"]
     
-    subgraph Strategies ["EventHandlerStrategy (@Component)"]
-        S1["AlunoMatriculaCriadaStrategy<br/>type: 'aluno.matricula.criada.v1'"]
-        S2["Futura: AlunoDadosAtualizadosStrategy<br/>type: 'aluno.dados.atualizados.v1'"]
-        S3["Futura: MatriculaTrancadaStrategy<br/>type: 'matricula.trancada.v1'"]
+    subgraph Strategies["EventHandlerStrategy - Spring Components"]
+        S1["AlunoMatriculaCriadaStrategy<br>type: aluno.matricula.criada.v1"]
+        S2["Futura: AlunoDadosAtualizadosStrategy<br>type: aluno.dados.atualizados.v1"]
+        S3["Futura: MatriculaTrancadaStrategy<br>type: matricula.trancada.v1"]
     end
     
-    Registry -->|Busca por event.getType()| S1
+    Registry -->|"Busca por type"| S1
     Registry -.-> S2
     Registry -.-> S3
     S1 --> ACL["Anti-Corruption Layer (ACL)"]
-    ACL --> Service["EnrollmentService / Negócio"]
+    ACL --> Service["EnrollmentService - Camada de Negocio"]
 ```
 
 ### Papel de Cada Componente
