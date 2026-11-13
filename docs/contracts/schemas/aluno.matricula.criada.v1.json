@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.instituicao.com/academic/aluno.matricula.criada.v1.json",
+  "title": "AlunoMatriculaCriadaV1",
+  "description": "Evento emitido quando uma nova matrícula acadêmica é criada no sistema legado.",
+  "type": "object",
+  "required": ["specversion", "id", "source", "type", "subject", "time", "datacontenttype", "data"],
+  "properties": {
+    "specversion": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "source": {
+      "type": "string",
+      "examples": ["sistema-legado"]
+    },
+    "type": {
+      "type": "string",
+      "const": "aluno.matricula.criada.v1"
+    },
+    "subject": {
+      "type": "string"
+    },
+    "time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "datacontenttype": {
+      "type": "string",
+      "const": "application/json"
+    },
+    "data": {
+      "type": "object",
+      "required": ["codMatricula", "codAluno", "periodoLetivo", "status", "dataMatricula"],
+      "properties": {
+        "codMatricula": {
+          "type": "integer",
+          "description": "Identificador numérico gerado pelo legado"
+        },
+        "codAluno": {
+          "type": "integer",
+          "description": "Identificador do aluno no sistema legado"
+        },
+        "periodoLetivo": {
+          "type": "string",
+          "description": "Período acadêmico de ingresso (ex: 2026/1)"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["CRIADA", "CANCELADA"]
+        },
+        "dataMatricula": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

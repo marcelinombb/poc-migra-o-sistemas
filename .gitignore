@@ -1,0 +1,31 @@
+# Compilação e Build (Maven)
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+
+# IDEs e Editores
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.settings/
+.project
+.classpath
+.factorypath
+
+# Logs e Dados Temporários
+*.log
+*.tmp
+logs/
+
+# Docker e Dados Persistidos Locais
+.docker/
+
+# Arquivos de Sistema
+.DS_Store
+Thumbs.db
+desktop.ini

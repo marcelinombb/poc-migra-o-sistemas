@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.instituicao.com/academic/matricula.status.atualizado.v1.json",
+  "title": "MatriculaStatusAtualizadoV1",
+  "description": "Evento emitido quando o status de uma matrícula é alterado pelo novo sistema.",
+  "type": "object",
+  "required": ["specversion", "id", "source", "type", "subject", "time", "datacontenttype", "data"],
+  "properties": {
+    "specversion": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "source": {
+      "type": "string",
+      "examples": ["sistema-novo"]
+    },
+    "type": {
+      "type": "string",
+      "const": "matricula.status.atualizado.v1"
+    },
+    "subject": {
+      "type": "string"
+    },
+    "time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "datacontenttype": {
+      "type": "string",
+      "const": "application/json"
+    },
+    "data": {
+      "type": "object",
+      "required": ["legacyId", "enrollmentId", "status", "updatedAt"],
+      "properties": {
+        "legacyId": {
+          "type": "integer",
+          "description": "Identificador original da matrícula no sistema legado para correlação"
+        },
+        "enrollmentId": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Identificador UUID do registro no novo sistema"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["PENDING", "CONFIRMED", "CANCELLED"],
+          "description": "Novo status definido pelo sistema moderno"
+        },
+        "reason": {
+          "type": "string",
+          "description": "Motivo da alteração de status"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

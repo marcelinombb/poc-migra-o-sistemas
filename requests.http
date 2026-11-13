@@ -1,0 +1,58 @@
+### ====================================================================
+### POC MIGRAÇÃO GRADUAL (STRANGLER FIG + OUTBOX + INBOX + ACL)
+### ====================================================================
+
+### 1. Criar Matrícula no Sistema Legado (Dispara Evento 1: aluno.matricula.criada.v1)
+POST http://localhost:8081/api/matriculas
+Content-Type: application/json
+
+{
+  "codAluno": 4501,
+  "periodoLetivo": "2026/1"
+}
+
+### 2. Listar Matrículas no Sistema Legado
+GET http://localhost:8081/api/matriculas
+Accept: application/json
+
+### 3. Consultar Matrícula Específica no Sistema Legado
+GET http://localhost:8081/api/matriculas/1
+Accept: application/json
+
+### ====================================================================
+### SISTEMA NOVO (MODERNO)
+### ====================================================================
+
+### 4. Consultar Matrícula no Sistema Novo buscando pelo ID Legado de Correlação (legacyId)
+GET http://localhost:8082/api/enrollments/legacy/1
+Accept: application/json
+
+### 5. Listar todas as Matrículas no Sistema Novo
+GET http://localhost:8082/api/enrollments
+Accept: application/json
+
+### 6. Atualizar Status no Sistema Novo (Dispara Evento 2: matricula.status.atualizado.v1)
+# Substitua o UUID abaixo pelo id retornado na requisição 4 ou 5
+PATCH http://localhost:8082/api/enrollments/SUBSTITUIR_PELO_UUID/status
+Content-Type: application/json
+
+{
+  "status": "CONFIRMED",
+  "reason": "Pagamento validado pelo módulo financeiro moderno"
+}
+
+### 7. Verificar se o Sistema Legado foi atualizado pelo Evento de Retorno
+GET http://localhost:8081/api/matriculas/1
+Accept: application/json
+
+### ====================================================================
+### RABBITMQ MANAGEMENT API (OU ACESSE http://localhost:15672 guest/guest)
+### ====================================================================
+
+### 8. Listar Exchanges
+GET http://localhost:15672/api/exchanges
+Authorization: Basic guest guest
+
+### 9. Listar Filas
+GET http://localhost:15672/api/queues
+Authorization: Basic guest guest

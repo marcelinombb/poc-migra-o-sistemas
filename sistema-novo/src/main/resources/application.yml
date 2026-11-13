@@ -1,0 +1,36 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: sistema-novo
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://postgres:5432/novo_db}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:rabbitmq}
+    port: ${SPRING_RABBITMQ_PORT:5672}
+    username: ${SPRING_RABBITMQ_USERNAME:guest}
+    password: ${SPRING_RABBITMQ_PASSWORD:guest}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+app:
+  rabbitmq:
+    exchange: academic.events
+    queues:
+      novo-matriculas: novo.matriculas.queue
+    routing-keys:
+      matricula-criada-v1: aluno.matricula.criada.v1
+      matricula-status-atualizado-v1: matricula.status.atualizado.v1
